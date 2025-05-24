@@ -1,37 +1,53 @@
 import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import React from "react";
 
 const client = generateClient<Schema>();
 
 function App() {
-  const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
 
-  useEffect(() => {
-    client.models.Todo.observeQuery().subscribe({
-      next: (data) => setTodos([...data.items]),
-    });
-  }, []);
+
 
   function ImageUploader() {
-    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+  
+    const handleClick = () => {
+      fileInputRef.current?.click();
+    };
   
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.files && event.target.files[0]) {
-        setSelectedImage(event.target.files[0]);
+        console.log(event.target.files[0]);
       }
     };
+  
+    return (
+      <>
+        <button type="button" onClick={handleClick}>
+          Upload Image
+        </button>
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleImageChange}
+          style={{ display: 'none' }}
+        />
+      </>
+    );
   }
   
   
-
+  
   return (
     <main>
-      <h1>welcome to grace's cool thing that's really good and better than your thing</h1>
+      <h1>i can read your mind and/or drink your blood</h1>
       <img src="assets/purin.png" alt="pompompurin!!!"/>
-      <button onClick={ImageUploader}>upload an image!!!</button>
+      <ImageUploader />
     </main>
   );
 }
+
 
 export default App;
