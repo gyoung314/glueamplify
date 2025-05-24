@@ -13,14 +13,26 @@ function App() {
     });
   }, []);
 
-  function createTodo() {
-    client.models.Todo.create({ content: window.prompt("Todo content") });
+  function ImageUploader() {
+    const [image, setImage] = useState(null);
+  
+    const handleChange = (e) => {
+      setImage(e.target.files[0]);
+    };
+  
+    return (
+      <div>
+        <input type="file" accept="image/*" onChange={handleChange} />
+        {image && <p>Selected: {image.name}</p>}
+      </div>
+    );
   }
+  
 
   return (
     <main>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
+      <h1>welcome to grace's cool thing that's really good and better than your thing</h1>
+      <button onClick={ImageUploader}>upload an image!!!</button>
       <ul>
         {todos.map((todo) => (
           <li key={todo.id}>{todo.content}</li>
